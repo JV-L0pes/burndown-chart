@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Burndown Chart</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
@@ -25,7 +26,7 @@
       </header>
 
       <div class="burndown-container bg-white/10 backdrop-blur-lg rounded-lg shadow-xl p-6 transition-all duration-300 hover:shadow-2xl">
-        <div class="chart-area mb-8">
+        <div class="chart-area mb-8" style="height: 400px;">
           <canvas id="burndownChart"></canvas>
         </div>
 
