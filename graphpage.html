@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Burndown Chart</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script type="module" src="graph.js"></script>
+  </head>
+  <body class="bg-gradient-to-br from-gray-900 to-gray-800 min-h-screen text-white">
+    <div class="container mx-auto px-4 py-8">
+      <header class="mb-8 flex justify-between items-center">
+        <h1 class="text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text">
+          Burndown Chart
+        </h1>
+        <a href="index.html" class="flex items-center space-x-2 text-blue-400 hover:text-blue-300 transition-colors">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+          </svg>
+          <span>Voltar</span>
+        </a>
+      </header>
+
+      <div class="burndown-container bg-white/10 backdrop-blur-lg rounded-lg shadow-xl p-6 transition-all duration-300 hover:shadow-2xl">
+        <div class="chart-area mb-8">
+          <canvas id="burndownChart"></canvas>
+        </div>
+
+        <div class="legend flex flex-wrap justify-center gap-4 mb-8">
+          <div class="legend-item flex items-center space-x-2 p-2 rounded-lg transition-all duration-200 hover:bg-white/20">
+            <div class="legend-line w-8 h-1 bg-blue-500"></div>
+            <span class="legend-text">Pontos Restantes</span>
+          </div>
+          <div class="legend-item flex items-center space-x-2 p-2 rounded-lg transition-all duration-200 hover:bg-white/20">
+            <div class="legend-line w-8 h-1 bg-orange-500"></div>
+            <span class="legend-text">Linha Ideal</span>
+          </div>
+        </div>
+
+        <div class="metrics-panel bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-lg p-6">
+          <div class="metric-row flex justify-between items-center mb-4">
+            <span class="metric-label">Progresso de Pontos</span>
+            <div class="progress-bar w-64 h-4 bg-gray-700 rounded-full overflow-hidden">
+              <div id="points-progress" class="progress h-full bg-blue-500 text-center text-xs leading-none py-1 text-white transition-all duration-500"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      AOS.init({
+        duration: 800,
+        easing: 'ease-in-out',
+        once: true
+      });
+    </script>
+  </body>
+</html>
