@@ -3,93 +3,60 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Gráfico Burndown</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <link href="style.css" rel="stylesheet">
+    <title>Burndown Chart</title>
+    <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script type="module" src="graph.js"></script>
   </head>
-  <body class="bg-gradient-to-br from-blue-50 to-white text-gray-900 min-h-screen p-6">
-    <div class="max-w-7xl mx-auto">
-      <div class="flex items-center justify-between mb-6" data-aos="fade-down">
-        <h1 class="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
-          Gráfico de Burndown
+  <body class="bg-gradient-to-br from-gray-900 to-gray-800 min-h-screen text-white">
+    <div class="container mx-auto px-4 py-8">
+      <header class="mb-8 flex justify-between items-center">
+        <h1 class="text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text">
+          Burndown Chart
         </h1>
-        <a href="index.html" class="px-4 py-2 text-blue-600 hover:text-blue-700 transition-colors">
-          <i data-lucide="arrow-left" class="inline-block w-5 h-5 mr-1"></i>
-          Voltar
+        <a href="index.html" class="flex items-center space-x-2 text-blue-400 hover:text-blue-300 transition-colors">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+          </svg>
+          <span>Voltar</span>
         </a>
-      </div>
+      </header>
 
-      <div class="burndown-container bg-white rounded-xl shadow-lg p-6 transition-all duration-300 hover:shadow-xl" data-aos="fade-up">
-        <div class="chart-title text-gray-900 mb-4">
-          <span id="remaining-points" class="font-semibold">Carregando pontos restantes...</span>
+      <div class="burndown-container bg-white/10 backdrop-blur-lg rounded-lg shadow-xl p-6 transition-all duration-300 hover:shadow-2xl">
+        <div class="chart-area mb-8">
+          <canvas id="burndownChart"></canvas>
         </div>
-        
-        <div id="chart-container" class="chart-area" style="height: 300px;">
-          <canvas id="burndownChart" aria-labelledby="chart-title" aria-describedby="chart-desc"></canvas>
-        </div>
-        
-        <div class="chart-legend flex justify-center my-6 space-x-6">
-          <div class="legend-item flex items-center transition-transform hover:scale-105">
-            <span class="legend-line remaining inline-block w-5 h-1 mr-2 bg-blue-500"></span>
-            <span class="legend-text text-sm text-gray-700">Points Remaining</span>
+
+        <div class="legend flex flex-wrap justify-center gap-4 mb-8">
+          <div class="legend-item flex items-center space-x-2 p-2 rounded-lg transition-all duration-200 hover:bg-white/20">
+            <div class="legend-line w-8 h-1 bg-blue-500"></div>
+            <span class="legend-text">Pontos Restantes</span>
           </div>
-          <div class="legend-item flex items-center transition-transform hover:scale-105">
-            <span class="legend-line completed inline-block w-5 h-1 mr-2 bg-red-500"></span>
-            <span class="legend-text text-sm text-gray-700">Points Completed</span>
-          </div>
-          <div class="legend-item flex items-center transition-transform hover:scale-105">
-            <span class="legend-line ideal inline-block w-5 h-1 mr-2 bg-yellow-500"></span>
-            <span class="legend-text text-sm text-gray-700">Ideal Burndown</span>
+          <div class="legend-item flex items-center space-x-2 p-2 rounded-lg transition-all duration-200 hover:bg-white/20">
+            <div class="legend-line w-8 h-1 bg-orange-500"></div>
+            <span class="legend-text">Linha Ideal</span>
           </div>
         </div>
-        
-        <div id="chart-desc" class="sr-only">
-          Gráfico mostrando a evolução dos pontos restantes e concluídos ao longo do sprint.
-        </div>
-        
-        <div class="metrics-panel mt-8 p-6 bg-gradient-to-br from-gray-50 to-white rounded-lg shadow-inner" data-aos="fade-up" data-aos-delay="200">
-          <div class="metric-row flex items-center mb-4 relative z-10 transition-all duration-300 hover:transform hover:translate-x-2">
-            <span class="metric-label w-40 text-sm text-gray-700 font-medium">Cards Completed</span>
-            <div class="progress-bar flex-grow bg-gray-200 h-6 rounded-full overflow-hidden">
-              <div id="cards-progress" class="progress h-full bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center text-white text-sm font-bold transition-all duration-1000 ease-out">
-                0/0 (0%)
-              </div>
-            </div>
-          </div>
-          
-          <div class="metric-row flex items-center mb-4 relative z-10 transition-all duration-300 hover:transform hover:translate-x-2">
-            <span class="metric-label w-40 text-sm text-gray-700 font-medium">Points Completed</span>
-            <div class="progress-bar flex-grow bg-gray-200 h-6 rounded-full overflow-hidden">
-              <div id="points-progress" class="progress h-full bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center text-white text-sm font-bold transition-all duration-1000 ease-out">
-                0/0 (0%)
-              </div>
-            </div>
-          </div>
-          
-          <div class="metric-row flex items-center mb-4 relative z-10 transition-all duration-300 hover:transform hover:translate-x-2">
-            <span class="metric-label w-40 text-sm text-gray-700 font-medium">Days Worked</span>
-            <div class="progress-bar flex-grow bg-gray-200 h-6 rounded-full overflow-hidden">
-              <div id="days-progress" class="progress h-full bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center text-white text-sm font-bold transition-all duration-1000 ease-out">
-                0/0 (0%)
-              </div>
+
+        <div class="metrics-panel bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-lg p-6">
+          <div class="metric-row flex justify-between items-center mb-4">
+            <span class="metric-label">Progresso de Pontos</span>
+            <div class="progress-bar w-64 h-4 bg-gray-700 rounded-full overflow-hidden">
+              <div id="points-progress" class="progress h-full bg-blue-500 text-center text-xs leading-none py-1 text-white transition-all duration-500"></div>
             </div>
           </div>
         </div>
       </div>
-
-      <footer class="mt-12 text-sm text-gray-500 text-center" data-aos="fade-up" data-aos-delay="400">
-        Projeto ABP – Abril/2025
-      </footer>
     </div>
 
-    <script src="graph.js"></script>
     <script>
-      AOS.init();
-      lucide.createIcons();
+      AOS.init({
+        duration: 800,
+        easing: 'ease-in-out',
+        once: true
+      });
     </script>
   </body>
 </html>

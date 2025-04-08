@@ -1,3 +1,6 @@
+// Importe o módulo do Trello
+import './trello.js';
+
 document.addEventListener("DOMContentLoaded", async function () {
   const ctx = document.getElementById("burndownChart").getContext("2d");
   let sprintData;
@@ -144,3 +147,90 @@ document.addEventListener("DOMContentLoaded", async function () {
   daysProgress.style.width = "100%";
   daysProgress.textContent = `${totalDays}/${totalDays} (100%)`;
 });
+
+// Função para atualizar o gráfico de burndown
+function updateBurndownChart(pointsByDay) {
+    const ctx = document.getElementById('burndownChart').getContext('2d');
+    
+    // Destrua o gráfico existente se houver um
+    if (burndownChart) {
+        burndownChart.destroy();
+    }
+    
+    // Prepare os dados
+    const labels = Object.keys(pointsByDay).sort((a, b) => a - b);
+    const data = labels.map(day => pointsByDay[day]);
+    
+    // Calcule a linha ideal
+    const totalPoints = data.reduce((sum, points) => sum + points, 0);
+    const idealLine = labels.map(day => totalPoints * (1 - day / Math.max(...labels)));
+    
+    // Crie o gráfico
+    burndownChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels.map(day => `Dia ${day}`),
+            datasets: [
+                {
+                    label: 'Pontos Restantes',
+                    data: data,
+                    borderColor: 'rgb(59, 130, 246)',
+                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                },
+                {
+                    label: 'Linha Ideal',
+                    data: idealLine,
+                    borderColor: 'rgb(251, 146, 60)',
+                    borderDash: [5, 5],
+                    fill: false
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                tooltip: {
+                    mode: 'index',
+                    intersect: false,
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Pontos'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Dias'
+                    }
+                }
+            }
+        }
+    });
+    
+    // Atualize as métricas
+    updateMetrics(pointsByDay);
+}
+
+// Função para atualizar as métricas
+function updateMetrics(pointsByDay) {
+    const totalPoints = Object.values(pointsByDay).reduce((sum, points) => sum + points, 0);
+    const completedPoints = Object.values(pointsByDay)
+        .filter((_, index) => index < Object.keys(pointsByDay).length - 1)
+        .reduce((sum, points) => sum + points, 0);
+    
+    const progress = (completedPoints / totalPoints) * 100;
+    
+    document.getElementById('points-progress').style.width = `${progress}%`;
+    document.getElementById('points-progress').textContent = `${completedPoints}/${totalPoints} (${Math.round(progress)}%)`;
+}
