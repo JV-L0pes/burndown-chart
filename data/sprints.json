@@ -1,0 +1,15 @@
+[
+    {
+        "id": "sprint-1",
+        "name": "Sprint 1 - Aprendizado Inicial",
+        "status": "Completada",
+        "startDate": "2025-03-18",
+        "endDate": "2025-04-15",
+        "metrics": {
+            "cards": "32/32",
+            "points": "80/80",
+            "days": "20/23"
+        },
+        "description": "Primeira sprint da equipe, focada no aprendizado inicial. Apesar dos desafios de adaptação, a equipe conseguiu entregar todos os cards e pontos planejados, demonstrando excelente capacidade de evolução ao longo do sprint."
+    }
+] 
