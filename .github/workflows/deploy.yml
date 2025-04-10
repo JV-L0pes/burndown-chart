@@ -5,7 +5,7 @@ on:
     branches: [ main ]
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -22,6 +22,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       - name: Setup Pages
         uses: actions/configure-pages@v3
       - name: Upload artifact
@@ -29,6 +31,8 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: .
+          commit_message: "Deploy to GitHub Pages"
+          force: true
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2 
