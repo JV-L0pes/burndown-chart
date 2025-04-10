@@ -1,7 +1,7 @@
 {
   "name": "burndown-chart",
   "version": "1.0.0",
-  "description": "Dashboard de Burndown Chart integrado com Trello",
+  "description": "Dashboard de Burndown Chart com dados simulados",
   "main": "index.js",
   "scripts": {
     "start": "http-server -p 3000",
@@ -11,8 +11,6 @@
   },
   "dependencies": {
     "chart.js": "^4.4.1",
-    "dotenv": "^16.3.1",
-    "lucide": "^0.294.0",
     "aos": "^2.3.4"
   },
   "devDependencies": {

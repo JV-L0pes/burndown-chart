@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>ErrorSquad - Burndown Chart</title>
+    <link rel="stylesheet" href="../css/graph.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  </head>
+  <body>
+    <header class="header">
+      <h1>ErrorSquad - Burndown Chart</h1>
+    </header>
+
+    <main class="container">
+      <section class="chart-section">
+        <div class="chart-wrapper">
+          <canvas id="burndownChart"></canvas>
+          <div id="loading-message">Carregando dados...</div>
+        </div>
+      </section>
+
+      <section class="metrics-container">
+        <div class="metric-item">
+          <div class="metric-info">
+            <span class="metric-label">Progresso dos Cards</span>
+            <span class="metric-value" id="cards-text">0/0 (0%)</span>
+          </div>
+          <div class="progress-container">
+            <div class="progress-bar" id="cards-progress"></div>
+          </div>
+        </div>
+
+        <div class="metric-item">
+          <div class="metric-info">
+            <span class="metric-label">Pontos Completados</span>
+            <span class="metric-value" id="points-text">0/0 (0%)</span>
+          </div>
+          <div class="progress-container">
+            <div class="progress-bar" id="points-progress"></div>
+          </div>
+        </div>
+
+        <div class="metric-item">
+          <div class="metric-info">
+            <span class="metric-label">Dias Trabalhados</span>
+            <span class="metric-value" id="days-text">0/0 (0%)</span>
+          </div>
+          <div class="progress-container">
+            <div class="progress-bar" id="days-progress"></div>
+          </div>
+        </div>
+      </section>
+
+      <div class="nav-buttons">
+        <a href="../index.html" class="btn btn-primary">Voltar para Home</a>
+      </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module" src="../js/graph.js"></script>
+  </body>
+</html>
