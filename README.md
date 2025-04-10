@@ -84,3 +84,4 @@ Desenvolvido para a equipe ErrorSquad.
 <div align="center">
   <sub>Built with ❤️ by João Victor</sub>
 </div>
+
