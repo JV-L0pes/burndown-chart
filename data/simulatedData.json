@@ -1,0 +1,47 @@
+{
+  "labels": [
+    "18/03", "19/03", "20/03", "21/03", "24/03", "25/03", "26/03", "27/03", "28/03", "31/03",
+    "01/04", "02/04", "03/04", "04/04", "07/04", "08/04", "09/04", "10/04", "11/04", "14/04", "15/04"
+  ],
+  "idealLine": [80, 76, 72, 68, 64, 60, 56, 52, 48, 44, 40, 36, 32, 28, 24, 20, 16, 12, 8, 4, 0],
+  "data": [
+    { "date": "18/03", "remaining": 80, "completed": 0 },
+    { "date": "19/03", "remaining": 80, "completed": 0 },
+    { "date": "20/03", "remaining": 78, "completed": 2 },
+    { "date": "21/03", "remaining": 76, "completed": 4 },
+    { "date": "24/03", "remaining": 76, "completed": 4 },
+    { "date": "25/03", "remaining": 74, "completed": 6 },
+    { "date": "26/03", "remaining": 73, "completed": 7 },
+    { "date": "27/03", "remaining": 72, "completed": 8 },
+    { "date": "28/03", "remaining": 69, "completed": 11 },
+    { "date": "31/03", "remaining": 69, "completed": 11 },
+    { "date": "01/04", "remaining": 66, "completed": 14 },
+    { "date": "02/04", "remaining": 66, "completed": 14 },
+    { "date": "03/04", "remaining": 63, "completed": 17 },
+    { "date": "04/04", "remaining": 59, "completed": 21 },
+    { "date": "07/04", "remaining": 59, "completed": 21 },
+    { "date": "08/04", "remaining": 52, "completed": 28 },
+    { "date": "09/04", "remaining": 50, "completed": 30 },
+    { "date": "10/04", "remaining": 45, "completed": 35 },
+    { "date": "11/04", "remaining": 38, "completed": 42 },
+    { "date": "14/04", "remaining": 22, "completed": 58 },
+    { "date": "15/04", "remaining": 0, "completed": 80 }
+  ],
+  "metrics": {
+    "cardsCompleted": {
+      "completed": 32,
+      "total": 32,
+      "percentage": 100
+    },
+    "pointsCompleted": {
+      "completed": 80,
+      "total": 80,
+      "percentage": 100
+    },
+    "daysWorked": {
+      "completed": 20,
+      "total": 23,
+      "percentage": 86.96
+    }
+  }
+}
