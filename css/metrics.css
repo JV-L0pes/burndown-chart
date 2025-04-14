@@ -237,4 +237,71 @@ header h1 {
   .footer-links {
     justify-content: center;
   }
-} 
+}
+
+/* Estilos para a mensagem de autenticação */
+.no-auth-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-color: var(--surface-color, #F5F5F5);
+    border-radius: 8px;
+    padding: 3rem 1.5rem;
+    margin: 2rem auto;
+    max-width: 500px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.no-auth-icon {
+    font-size: 4rem;
+    color: var(--secondary-color, #4B4BFF);
+    margin-bottom: 1.5rem;
+    opacity: 0.7;
+}
+
+.no-auth-container h3 {
+    font-size: 1.4rem;
+    margin-bottom: 0.75rem;
+    color: var(--text-color, #2D2D2D);
+}
+
+.no-auth-container p {
+    font-size: 0.95rem;
+    color: var(--text-secondary, #666666);
+    margin-bottom: 2rem;
+    max-width: 350px;
+}
+
+.auth-action .btn {
+    font-size: 0.9rem;
+    padding: 0.75rem 1.25rem;
+}
+
+.auth-action .btn i {
+    margin-right: 0.5rem;
+}
+
+/* Botão "Conectar ao Trello" */
+.btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
+  text-align: center;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  color: white !important;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}

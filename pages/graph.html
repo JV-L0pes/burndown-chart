@@ -13,6 +13,33 @@
     </header>
 
     <main class="container">
+      <!-- Botão para abrir o modal do Trello -->
+      <button id="open-trello-modal-btn" class="btn btn-secondary floating-btn">
+        <i class="fab fa-trello"></i> Integrar com Trello
+      </button>
+
+      <!-- Modal de integração com Trello -->
+      <div id="trello-modal" class="modal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2>Integração com Trello</h2>
+            <span class="close-modal">&times;</span>
+          </div>
+          <div class="modal-body">
+            <div class="trello-auth-fields">
+              <label>Chave Trello: <input type="text" id="trello-key" placeholder="Sua chave Trello"></label>
+              <label>Token Trello: <input type="text" id="trello-token" placeholder="Seu token Trello"></label>
+              <label>ID do Board: <input type="text" id="trello-board" placeholder="ID do board Trello"></label>
+              <div class="trello-buttons">
+                <button id="load-trello-btn" class="btn btn-primary">Carregar do Trello</button>
+                <button id="disconnect-trello-btn" class="btn btn-secondary">Desconectar</button>
+              </div>
+            </div>
+            <div id="trello-error" style="color: red; display: none;"></div>
+          </div>
+        </div>
+      </div>
+
       <section class="chart-section">
         <div class="chart-wrapper">
           <canvas id="burndownChart"></canvas>

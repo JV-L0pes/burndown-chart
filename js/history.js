@@ -1,11 +1,60 @@
+// Detecta se está usando dados simulados (demo)
+function isSimulatedDemo() {
+    const key = localStorage.getItem('trello_key') || '';
+    const token = localStorage.getItem('trello_token') || '';
+    const boardId = localStorage.getItem('trello_board_id') || '';
+    return (
+        key === '7fd281b264c39b6b3f17b478937b1d54' &&
+        token === 'ATTAf8b7fc8e40203d0aa36b3ff8f9dc13ebca74dc1c78f44551a3578a0e5af2bccd62FB2E29' &&
+        boardId === '64f7a3c2d0cbad8763f9a4e1'
+    );
+}
+
+// Função para mostrar ou ocultar conteúdo com base nas credenciais
+function toggleContentVisibility() {
+    const noAuthMessage = document.getElementById('no-auth-message');
+    const sprintsGrid = document.querySelector('.sprints-grid');
+    
+    if (isSimulatedDemo()) {
+        // Se tiver credenciais, mostra o conteúdo e esconde a mensagem
+        if (noAuthMessage) noAuthMessage.style.display = 'none';
+        if (sprintsGrid) sprintsGrid.style.display = 'grid';
+    } else {
+        // Se não tiver credenciais, mostra a mensagem e esconde o conteúdo
+        if (noAuthMessage) noAuthMessage.style.display = 'flex';
+        if (sprintsGrid) sprintsGrid.style.display = 'none';
+    }
+}
+
 // Função para carregar os dados dos sprints
 async function loadSprintsData() {
     try {
-        const response = await fetch('../data/sprints.json');
-        if (!response.ok) {
-            throw new Error('Erro ao carregar dados dos sprints');
+        let sprints = [];
+        if (isSimulatedDemo()) {
+            // Dados simulados para demo
+            sprints = [
+                {
+                    id: 'sprint-1',
+                    name: 'Sprint 1 - Aprendizado Inicial',
+                    status: 'Completada',
+                    startDate: '2025-03-18',
+                    endDate: '2025-04-15',
+                    metrics: {
+                        cards: '32/32',
+                        points: '80/80',
+                        days: '20/23'
+                    },
+                    description: 'Primeira sprint da equipe, focada no aprendizado inicial. Apesar dos desafios de adaptação, a equipe conseguiu entregar todos os cards e pontos planejados, demonstrando excelente capacidade de evolução ao longo do sprint.'
+                }
+            ];
+        } else {
+            const response = await fetch('../data/sprints.json');
+            if (!response.ok) {
+                throw new Error('Erro ao carregar dados dos sprints');
+            }
+            sprints = await response.json();
         }
-        return await response.json();
+        return sprints;
     } catch (error) {
         console.error('Erro:', error);
         return [];
@@ -76,21 +125,39 @@ function formatDate(dateString) {
 
 // Inicialização
 document.addEventListener('DOMContentLoaded', async () => {
-    const searchInput = document.querySelector('.search-box input');
-    const statusFilter = document.querySelector('.filter-options select');
-    let sprints = await loadSprintsData();
+    // Verifica credenciais e controla visibilidade do conteúdo
+    toggleContentVisibility();
 
-    // Renderizar sprints iniciais
-    renderSprintCards(sprints);
+    // Carrega os dados apenas se tiver credenciais
+    if (isSimulatedDemo()) {
+        const searchInput = document.querySelector('.search-box input');
+        const statusFilter = document.querySelector('.filter-options select');
+        let sprints = await loadSprintsData();
 
-    // Adicionar listeners para filtros
-    searchInput.addEventListener('input', () => {
-        const filteredSprints = filterSprints(sprints, searchInput.value, statusFilter.value);
-        renderSprintCards(filteredSprints);
+        // Renderizar sprints iniciais
+        renderSprintCards(sprints);
+
+        // Adicionar listeners para filtros
+        if (searchInput && statusFilter) {
+            searchInput.addEventListener('input', () => {
+                const filteredSprints = filterSprints(sprints, searchInput.value, statusFilter.value);
+                renderSprintCards(filteredSprints);
+            });
+
+            statusFilter.addEventListener('change', () => {
+                const filteredSprints = filterSprints(sprints, searchInput.value, statusFilter.value);
+                renderSprintCards(filteredSprints);
+            });
+        }
+    }
+
+    // Verifica se há mudanças nas credenciais do localStorage
+    window.addEventListener('storage', (e) => {
+        if (e.key === 'trello_board_id' || e.key === 'trello_key' || e.key === 'trello_token') {
+            toggleContentVisibility();
+            if (isSimulatedDemo()) {
+                loadSprintsData().then(renderSprintCards);
+            }
+        }
     });
-
-    statusFilter.addEventListener('change', () => {
-        const filteredSprints = filterSprints(sprints, searchInput.value, statusFilter.value);
-        renderSprintCards(filteredSprints);
-    });
-}); 
+});

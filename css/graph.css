@@ -184,7 +184,146 @@ canvas {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Responsivo */
+/* Estilos para a seção de integração com Trello */
+.trello-auth-section {
+  background-color: var(--surface-color, #F5F5F5);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.trello-auth-section h2 {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  color: var(--text-color, #2D2D2D);
+}
+
+.trello-auth-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.trello-auth-fields label {
+  display: block;
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
+  color: var(--text-secondary, #666666);
+}
+
+.trello-auth-fields input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid var(--border-color, #E0E0E0);
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+#load-trello-btn {
+  margin-top: 1rem;
+  align-self: end;
+}
+
+/* Botões do modal do Trello */
+.trello-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+  justify-content: space-between;
+}
+
+.btn-secondary {
+  background-color: var(--secondary-color);
+  color: white;
+}
+
+/* Estilo para o botão flutuante */
+.floating-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  z-index: 99;
+  background-color: var(--secondary-color);
+  color: white;
+  border-radius: 50px;
+  padding: 0.75rem 1.5rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.floating-btn:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+}
+
+/* Estilos para o modal */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  overflow: auto;
+}
+
+.modal-content {
+  position: relative;
+  background-color: var(--background-color);
+  margin: 10% auto;
+  padding: 0;
+  width: 50%;
+  max-width: 600px;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  animation: modalFadeIn 0.3s;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: var(--text-color);
+}
+
+.close-modal {
+  color: var(--text-secondary);
+  font-size: 1.8rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.close-modal:hover {
+  color: var(--primary-color);
+}
+
+.modal-body {
+  padding: 1.5rem;
+}
+
 @media (max-width: 768px) {
   .container {
     padding: 1rem;
@@ -205,4 +344,8 @@ canvas {
   header h1 {
     font-size: 1.5rem;
   }
-} 
+
+  .trello-auth-fields {
+    grid-template-columns: 1fr;
+  }
+}

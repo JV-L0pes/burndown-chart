@@ -22,7 +22,24 @@
 
     <main class="metrics-container">
         <div class="background-grid"></div>
-        <div class="metrics-content">
+        
+        <!-- Conteúdo quando não há credenciais -->
+        <div id="no-auth-message" class="no-auth-container">
+            <div class="no-auth-icon">
+                <i class="fas fa-chart-bar"></i>
+            </div>
+            <h3>Nenhuma métrica disponível</h3>
+            <p>Conecte-se ao Trello para visualizar métricas de desempenho da equipe.</p>
+            <div class="auth-action">
+                <a href="graph.html" class="btn btn-primary">
+                    <i class="fas fa-plug"></i>
+                    Conectar ao Trello
+                </a>
+            </div>
+        </div>
+        
+        <!-- Métricas - inicialmente oculto -->
+        <div id="metrics-content" class="metrics-content" style="display: none;">
             <h2 class="metrics-title">Métricas da Sprint 1</h2>
             
             <div class="metrics-grid">
@@ -111,5 +128,5 @@
 
     <script src="../js/metrics.js"></script>
 </body>
-</html> 
+</html>
 
