@@ -15,12 +15,17 @@
   box-sizing: border-box;
 }
 
+html {
+  font-size: 100%;
+}
+
 body {
   font-family: "Segoe UI", Arial, sans-serif;
   background-color: var(--background-color);
   color: var(--text-color);
   line-height: 1.5;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 /* Header Styles */
@@ -215,18 +220,37 @@ header h1 {
 }
 
 /* Responsive Design */
+@media (max-width: 992px) {
+  .metrics-grid {
+    gap: 1.5rem;
+  }
+  
+  .metric-chart {
+    height: 280px;
+  }
+}
+
 @media (max-width: 768px) {
+  html {
+    font-size: 95%;
+  }
+  
   .metrics-container {
     padding: 1rem;
   }
 
   .metrics-grid {
     grid-template-columns: 1fr;
-    padding: 0 1rem;
+    padding: 0 0.5rem;
+    gap: 1.25rem;
   }
 
   .metric-chart {
     height: 250px;
+  }
+  
+  .metric-card {
+    padding: 1.25rem;
   }
 
   .footer-content {
@@ -237,6 +261,73 @@ header h1 {
 
   .footer-links {
     justify-content: center;
+  }
+  
+  .header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .metrics-title {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .no-auth-container {
+    padding: 2rem 1.25rem;
+    margin: 1.5rem auto;
+  }
+}
+
+@media (max-width: 480px) {
+  html {
+    font-size: 90%;
+  }
+  
+  .metrics-container {
+    padding: 0.8rem;
+  }
+  
+  .metrics-grid {
+    padding: 0;
+  }
+  
+  .metric-card {
+    padding: 1rem;
+  }
+  
+  .metric-header {
+    margin-bottom: 1.2rem;
+  }
+  
+  .metric-chart {
+    height: 220px;
+  }
+  
+  .header h1 {
+    font-size: 1.3rem;
+  }
+  
+  .metrics-title {
+    font-size: 1.6rem;
+    margin-bottom: 1.2rem;
+  }
+  
+  .no-auth-container {
+    padding: 1.5rem 1rem;
+  }
+  
+  .no-auth-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+  
+  .no-auth-container h3 {
+    font-size: 1.2rem;
+  }
+  
+  .btn {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
   }
 }
 
