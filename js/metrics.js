@@ -45,18 +45,36 @@ function toggleContentVisibility() {
     }
 }
 
-// Substitui métricas simuladas se demo
-function updateDemoMetrics() {
-    if (!isSimulatedDemo()) return;
-    // Velocidade
-    document.querySelector('.metric-details p:nth-child(1) strong').textContent = '80/80';
-    document.querySelector('.metric-details p:nth-child(2) strong').textContent = '100%';
-    // Produtividade
-    document.querySelectorAll('.metric-details')[1].innerHTML = '<p>Cards completados: <strong>32/32</strong></p><p>Média diária: <strong>1.6 cards</strong></p>';
-    // Eficiência
-    document.querySelectorAll('.metric-details')[2].innerHTML = '<p>Dias trabalhados: <strong>20/23</strong></p><p>Progresso temporal: <strong>86.96%</strong></p>';
-    // Qualidade
-    document.querySelectorAll('.metric-details')[3].innerHTML = '<p>Concluídos: <strong>100%</strong></p><p>Em progresso: <strong>0%</strong></p><p>A fazer: <strong>0%</strong></p>';
+// Função para obter dados da sprint atual
+function getCurrentSprintData() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const sprintId = urlParams.get('sprint') || 'sprint-1';
+    
+    if (sprintId === 'sprint-1') {
+        return {
+            labels: ['18-22/03', '25-29/03', '01-05/04', '08-15/04'],
+            pontosCompletados: [10, 15, 25, 30],
+            cardsCompletados: [5, 8, 9, 10],
+            totalPontos: 80,
+            totalCards: 32,
+            efficiency: {
+                realizado: [12.5, 31.25, 62.5, 100],
+                esperado: [25, 50, 75, 100]
+            }
+        };
+    } else {
+        return {
+            labels: ['16-20/04', '23-27/04', '30-04/05', '07-14/05'],
+            pontosCompletados: [15, 20, 15, 10],
+            cardsCompletados: [6, 8, 6, 4],
+            totalPontos: 100,
+            totalCards: 40,
+            efficiency: {
+                realizado: [15, 35, 50, 60],
+                esperado: [25, 50, 75, 100]
+            }
+        };
+    }
 }
 
 // Gráfico de Velocidade
@@ -65,17 +83,14 @@ function initVelocityChart() {
     if (!ctx) return;
     
     const ctx2d = ctx.getContext('2d');
+    const sprintData = getCurrentSprintData();
     
-    // Dados semanais até 15/04
-    const labels = ['18-22/03', '25-29/03', '01-05/04', '08-15/04'];
-    const pontosCompletados = [10, 15, 25, 30]; // Total: 80 pontos
-
     new Chart(ctx2d, {
         type: 'line',
         data: {
-            labels: labels,
+            labels: sprintData.labels,
             datasets: [{
-                data: pontosCompletados,
+                data: sprintData.pontosCompletados,
                 borderColor: '#FF4B4B',
                 backgroundColor: 'rgba(255, 75, 75, 0.1)',
                 tension: 0.4,
@@ -111,17 +126,14 @@ function initProductivityChart() {
     if (!ctx) return;
     
     const ctx2d = ctx.getContext('2d');
+    const sprintData = getCurrentSprintData();
     
-    // Dados até 15/04
-    const labels = ['18-22/03', '25-29/03', '01-05/04', '08-15/04'];
-    const cardsCompletados = [5, 8, 9, 10]; // Total: 32 cards
-
     new Chart(ctx2d, {
         type: 'bar',
         data: {
-            labels: labels,
+            labels: sprintData.labels,
             datasets: [{
-                data: cardsCompletados,
+                data: sprintData.cardsCompletados,
                 backgroundColor: 'rgba(75, 75, 255, 0.2)',
                 borderColor: '#4B4BFF',
                 borderWidth: 1
@@ -156,20 +168,16 @@ function initEfficiencyChart() {
     if (!ctx) return;
     
     const ctx2d = ctx.getContext('2d');
+    const sprintData = getCurrentSprintData();
     
-    // Progresso semanal em relação ao ideal até 15/04
-    const labels = ['18-22/03', '25-29/03', '01-05/04', '08-15/04'];
-    const realizado = [12.5, 31.25, 62.5, 100]; // Percentual acumulado real
-    const esperado = [25, 50, 75, 100]; // Percentual ideal
-
     new Chart(ctx2d, {
         type: 'line',
         data: {
-            labels: labels,
+            labels: sprintData.labels,
             datasets: [
                 {
                     label: 'Realizado',
-                    data: realizado,
+                    data: sprintData.efficiency.realizado,
                     borderColor: '#9B4DCA',
                     backgroundColor: 'rgba(155, 77, 202, 0.1)',
                     tension: 0.4,
@@ -177,7 +185,7 @@ function initEfficiencyChart() {
                 },
                 {
                     label: 'Esperado',
-                    data: esperado,
+                    data: sprintData.efficiency.esperado,
                     borderColor: '#4B4BFF',
                     backgroundColor: 'rgba(75, 75, 255, 0.1)',
                     tension: 0.4,
@@ -221,13 +229,16 @@ function initQualityChart() {
     if (!ctx) return;
     
     const ctx2d = ctx.getContext('2d');
+    const sprintData = getCurrentSprintData();
+    const totalCompletado = sprintData.pontosCompletados.reduce((a, b) => a + b, 0);
+    const totalRestante = sprintData.totalPontos - totalCompletado;
     
     new Chart(ctx2d, {
         type: 'doughnut',
         data: {
             labels: ['Concluído', 'Em Progresso', 'A Fazer'],
             datasets: [{
-                data: [100, 0, 0], // Sprint concluída com sucesso
+                data: [totalCompletado, 0, totalRestante],
                 backgroundColor: [
                     '#4CAF50',
                     '#4B4BFF',
@@ -244,8 +255,47 @@ function initQualityChart() {
     });
 }
 
-// Inicialização dos gráficos
+// Função para atualizar o título da sprint
+function updateSprintTitle() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const sprintId = urlParams.get('sprint') || 'sprint-1';
+    const sprintTitle = document.getElementById('sprint-title');
+    if (sprintTitle) {
+        sprintTitle.textContent = `Métricas da ${sprintId === 'sprint-1' ? 'Sprint 1' : 'Sprint 2'}`;
+    }
+}
+
+// Função para atualizar métricas simuladas
+function updateDemoMetrics() {
+    if (!isSimulatedDemo()) return;
+    
+    const urlParams = new URLSearchParams(window.location.search);
+    const sprintId = urlParams.get('sprint') || 'sprint-1';
+    
+    if (sprintId === 'sprint-1') {
+        // Métricas da Sprint 1
+        document.querySelector('.metric-details p:nth-child(1) strong').textContent = '80/80';
+        document.querySelector('.metric-details p:nth-child(2) strong').textContent = '100%';
+        document.querySelectorAll('.metric-details')[1].innerHTML = '<p>Cards completados: <strong>32/32</strong></p><p>Média diária: <strong>1.6 cards</strong></p>';
+        document.querySelectorAll('.metric-details')[2].innerHTML = '<p>Dias trabalhados: <strong>20/23</strong></p><p>Progresso temporal: <strong>86.96%</strong></p>';
+        document.querySelectorAll('.metric-details')[3].innerHTML = '<p>Concluídos: <strong>100%</strong></p><p>Em progresso: <strong>0%</strong></p><p>A fazer: <strong>0%</strong></p>';
+    } else {
+        // Métricas da Sprint 2
+        document.querySelector('.metric-details p:nth-child(1) strong').textContent = '60/100';
+        document.querySelector('.metric-details p:nth-child(2) strong').textContent = '60%';
+        document.querySelectorAll('.metric-details')[1].innerHTML = '<p>Cards completados: <strong>24/40</strong></p><p>Média diária: <strong>2 cards</strong></p>';
+        document.querySelectorAll('.metric-details')[2].innerHTML = '<p>Dias trabalhados: <strong>12/20</strong></p><p>Progresso temporal: <strong>60%</strong></p>';
+        document.querySelectorAll('.metric-details')[3].innerHTML = '<p>Concluídos: <strong>60%</strong></p><p>Em progresso: <strong>20%</strong></p><p>A fazer: <strong>20%</strong></p>';
+    }
+}
+
+// Inicialização
 document.addEventListener('DOMContentLoaded', () => {
+    updateSprintTitle();
+    initVelocityChart();
+    initProductivityChart();
+    initQualityChart();
+    
     // Verifica credenciais e controla visibilidade
     toggleContentVisibility();
     

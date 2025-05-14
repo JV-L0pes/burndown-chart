@@ -10,16 +10,67 @@ const theme = {
     surface: '#F5F5F5',   // Cinza claro
     text: '#2D2D2D',      // Texto escuro
     textSecondary: '#666666',
-    border: '#E0E0E0'
+    border: '#E0E0E0',
+    success: '#4CAF50',   // Verde
+    warning: '#FFC107',   // Amarelo
+    error: '#F44336'      // Vermelho erro
 };
 
 // Integração com a API do Trello
 const TRELLO_API_BASE = 'https://api.trello.com/1';
 
 // Chaves fictícias para demo (aparência realista)
-const DEMO_KEY = '7fd281b264c39b6b3f17b478937b1d54'; // Chave API realista
-const DEMO_TOKEN = 'ATTAf8b7fc8e40203d0aa36b3ff8f9dc13ebca74dc1c78f44551a3578a0e5af2bccd62FB2E29'; // Token autêntico
-const DEMO_BOARD = '64f7a3c2d0cbad8763f9a4e1'; // Board ID realista
+const DEMO_KEYS = {
+    'sprint-1': {
+        key: '7fd281b264c39b6b3f17b478937b1d54',
+        token: 'ATTAf8b7fc8e40203d0aa36b3ff8f9dc13ebca74dc1c78f44551a3578a0e5af2bccd62FB2E29',
+        board: '64f7a3c2d0cbad8763f9a4e1'
+    },
+    'sprint-2': {
+        key: '8e392c7a5f1d4b6a9c8e2d1f3a5b7c9d',
+        token: 'ATTAf9c8e7d6c5b4a3f2e1d0c9b8a7f6e5d4c3b2a1f0e9d8c7b6a5f4e3d2c1b0a9f8e7d6c5b4a3',
+        board: '75e4b2d1c9a8f7e6d5c4b3a2f1e0d9c8'
+    }
+};
+
+// Função para obter o ID da sprint da URL
+function getSprintIdFromUrl() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('sprint') || 'sprint-1';
+}
+
+// Função para verificar se está usando dados simulados
+function isSimulatedDemo() {
+    const key = document.getElementById('trello-key').value.trim();
+    const token = document.getElementById('trello-token').value.trim();
+    const boardId = document.getElementById('trello-board').value.trim();
+    const sprintId = getSprintIdFromUrl();
+    
+    return (
+        key === DEMO_KEYS[sprintId].key &&
+        token === DEMO_KEYS[sprintId].token &&
+        boardId === DEMO_KEYS[sprintId].board
+    );
+}
+
+// Função para carregar dados simulados baseado na sprint
+async function loadSimulatedData(sprintId) {
+    try {
+        const dataFile = sprintId === 'sprint-2' ? 'simulatedDataSprint2.json' : 'simulatedData.json';
+        console.log(`Carregando dados simulados para sprint: ${sprintId}`);
+        console.log(`Arquivo de dados: ${dataFile}`);
+        
+        const response = await fetch(`../data/${dataFile}`);
+        if (!response.ok) {
+            throw new Error(`Erro ao carregar dados simulados: ${response.statusText}`);
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Erro ao carregar dados simulados:', error);
+        throw error;
+    }
+}
 
 // Função utilitária para montar URLs da API do Trello
 function trelloApiUrl(path, params = {}) {
@@ -176,6 +227,7 @@ function updateMetrics(data) {
 
 // Função para processar dados do Trello e gerar estrutura para o gráfico
 async function loadTrelloBurndownData(boardId, key, token) {
+    console.log('Iniciando carregamento de dados do Trello');
     // Busca listas, cards e ações
     const [lists, cards, actions] = await Promise.all([
         fetchTrelloLists(boardId, key, token),
@@ -242,6 +294,16 @@ async function loadTrelloBurndownData(boardId, key, token) {
     return { labels, data, metrics };
 }
 
+// Função para identificar a sprint pelas credenciais de demo
+function getSprintIdByDemoCredentials(key, token, boardId) {
+    for (const [sprintId, creds] of Object.entries(DEMO_KEYS)) {
+        if (key === creds.key && token === creds.token && boardId === creds.board) {
+            return sprintId;
+        }
+    }
+    return null;
+}
+
 // Função para carregar dados do Trello OU dados simulados se demo
 async function loadBurndownDataFromTrelloOrError() {
     const key = document.getElementById('trello-key').value.trim();
@@ -249,33 +311,65 @@ async function loadBurndownDataFromTrelloOrError() {
     const boardId = document.getElementById('trello-board').value.trim();
     const errorDiv = document.getElementById('trello-error');
     errorDiv.style.display = 'none';
+
     if (!key || !token || !boardId) {
         document.getElementById('loading-message').textContent = 'Preencha chave, token e ID do board do Trello para visualizar o gráfico.';
         document.getElementById('loading-message').style.display = 'block';
         return;
     }
-    document.getElementById('loading-message').textContent = 'Carregando dados do Trello...';
+
+    document.getElementById('loading-message').textContent = 'Carregando dados...';
     document.getElementById('loading-message').style.display = 'block';
+
     try {
-        // Se for demo, carrega dados simulados de forma "camuflada"
-        if (key === DEMO_KEY && token === DEMO_TOKEN && boardId === DEMO_BOARD) {
-            // Busca o arquivo como se fosse uma chamada real
-            const response = await fetch('../data/simulatedData.json', { cache: 'no-store' });
-            if (!response.ok) throw new Error('Erro ao carregar dados do Trello');
-            const data = await response.json();
+        // Detecta sprint pelas credenciais de demo
+        const sprintIdByCreds = getSprintIdByDemoCredentials(key, token, boardId);
+        let sprintId = getSprintIdFromUrl();
+        if (sprintIdByCreds) {
+            sprintId = sprintIdByCreds;
+            console.log('Detectado sprint pelas credenciais de demo:', sprintId);
+        } else {
+            console.log('Usando sprint da URL:', sprintId);
+        }
+
+        // Verifica se são credenciais de demo
+        const isDemo = !!sprintIdByCreds;
+        console.log('É demo?', isDemo);
+        console.log('Credenciais fornecidas:', { key, token, boardId });
+        if (isDemo) {
+            console.log('Carregando dados simulados para:', sprintId);
+            const data = await loadSimulatedData(sprintId);
             await renderBurndownWithData(data);
             document.getElementById('loading-message').style.display = 'none';
+            // Atualiza título da sprint
+            updateSprintTitle(sprintId);
             return;
         }
-        // Caso contrário, usa a API real do Trello
+
+        // Se não for demo, tenta carregar dados reais do Trello
+        console.log('Tentando carregar dados reais do Trello');
         const data = await loadTrelloBurndownData(boardId, key, token);
         await renderBurndownWithData(data);
         document.getElementById('loading-message').style.display = 'none';
+        // Atualiza título da sprint
+        updateSprintTitle(sprintId);
     } catch (err) {
+        console.error('Erro ao carregar dados:', err);
         errorDiv.textContent = err.message;
         errorDiv.style.display = 'block';
-        document.getElementById('loading-message').textContent = 'Erro ao carregar dados do Trello.';
+        document.getElementById('loading-message').textContent = 'Erro ao carregar dados.';
         document.getElementById('loading-message').style.display = 'block';
+    }
+}
+
+// Função para atualizar o título da sprint dinamicamente
+function updateSprintTitle(sprintId) {
+    const titleEl = document.getElementById('sprint-title');
+    if (!titleEl) return;
+    if (sprintId === 'sprint-2') {
+        titleEl.textContent = 'Métricas da Sprint 2';
+    } else {
+        titleEl.textContent = 'Métricas da Sprint 1';
     }
 }
 
@@ -283,10 +377,21 @@ async function loadBurndownDataFromTrelloOrError() {
 async function renderBurndownWithData(data) {
     const ctx = document.getElementById('burndownChart').getContext('2d');
     if (burndownChart) burndownChart.destroy();
+    
     const labels = data.labels;
     const remainingPoints = data.data.map(item => item.remaining);
     const completedPoints = data.data.map(item => item.completed);
     const idealLine = calculateIdealLine(data);
+
+    // Configuração do gradiente para o gráfico
+    const gradientRemaining = ctx.createLinearGradient(0, 0, 0, 400);
+    gradientRemaining.addColorStop(0, 'rgba(255, 75, 75, 0.2)');
+    gradientRemaining.addColorStop(1, 'rgba(255, 75, 75, 0)');
+
+    const gradientCompleted = ctx.createLinearGradient(0, 0, 0, 400);
+    gradientCompleted.addColorStop(0, 'rgba(75, 75, 255, 0.2)');
+    gradientCompleted.addColorStop(1, 'rgba(75, 75, 255, 0)');
+
     burndownChart = new Chart(ctx, {
         type: 'line',
         data: {
@@ -296,10 +401,10 @@ async function renderBurndownWithData(data) {
                     label: 'Pontos Restantes',
                     data: remainingPoints,
                     borderColor: theme.primary,
-                    backgroundColor: 'rgba(255, 75, 75, 0.1)',
+                    backgroundColor: gradientRemaining,
                     tension: 0.4,
                     fill: true,
-                    borderWidth: 2,
+                    borderWidth: 3,
                     pointRadius: 4,
                     pointHoverRadius: 6,
                     pointBackgroundColor: '#FFFFFF',
@@ -324,10 +429,10 @@ async function renderBurndownWithData(data) {
                     data: completedPoints,
                     type: 'line',
                     borderColor: theme.secondary,
-                    backgroundColor: 'rgba(75, 75, 255, 0.1)',
+                    backgroundColor: gradientCompleted,
                     tension: 0.4,
                     fill: true,
-                    borderWidth: 2,
+                    borderWidth: 3,
                     pointRadius: 4,
                     pointHoverRadius: 6,
                     pointBackgroundColor: '#FFFFFF',
@@ -340,6 +445,10 @@ async function renderBurndownWithData(data) {
         options: {
             responsive: true,
             maintainAspectRatio: false,
+            interaction: {
+                mode: 'index',
+                intersect: false
+            },
             layout: {
                 padding: {
                     top: 20,
@@ -347,10 +456,6 @@ async function renderBurndownWithData(data) {
                     bottom: 20,
                     left: 20
                 }
-            },
-            hover: {
-                mode: 'nearest',
-                intersect: false
             },
             plugins: {
                 legend: {
@@ -388,6 +493,18 @@ async function renderBurndownWithData(data) {
                     bodyFont: {
                         size: 12,
                         family: "'Segoe UI', 'Arial', sans-serif"
+                    },
+                    callbacks: {
+                        label: function(context) {
+                            let label = context.dataset.label || '';
+                            if (label) {
+                                label += ': ';
+                            }
+                            if (context.parsed.y !== null) {
+                                label += context.parsed.y.toFixed(1) + ' pontos';
+                            }
+                            return label;
+                        }
                     }
                 }
             },
@@ -395,8 +512,9 @@ async function renderBurndownWithData(data) {
                 y: {
                     beginAtZero: true,
                     grid: {
-                        display: false,
-                        drawBorder: false
+                        display: true,
+                        drawBorder: false,
+                        color: 'rgba(0, 0, 0, 0.05)'
                     },
                     border: {
                         display: false
@@ -432,13 +550,72 @@ async function renderBurndownWithData(data) {
                         },
                         padding: 8,
                         maxRotation: 45,
-                        minRotation: 45
+                        minRotation: 45,
+                        callback: function(value, index) {
+                            // Mostra a data como texto puro no formato dd/mm
+                            const label = this.getLabelForValue(index);
+                            const [ano, mes, dia] = label.split('-');
+                            return `${dia}/${mes}`;
+                        }
                     }
                 }
+            },
+            animation: {
+                duration: 1000,
+                easing: 'easeInOutQuart'
             }
         }
     });
-    updateMetrics(data);
+
+    // Atualiza as métricas com animação
+    updateMetricsWithAnimation(data.metrics);
+}
+
+// Função para atualizar métricas com animação
+function updateMetricsWithAnimation(metrics) {
+    const elements = {
+        cards: {
+            progress: document.getElementById('cards-progress'),
+            text: document.getElementById('cards-text')
+        },
+        points: {
+            progress: document.getElementById('points-progress'),
+            text: document.getElementById('points-text')
+        },
+        days: {
+            progress: document.getElementById('days-progress'),
+            text: document.getElementById('days-text')
+        }
+    };
+
+    // Anima cada métrica
+    Object.entries(metrics).forEach(([key, value]) => {
+        const element = elements[key];
+        if (!element) return;
+
+        // Anima a barra de progresso
+        element.progress.style.transition = 'width 1s ease-in-out';
+        element.progress.style.width = `${value.percentage}%`;
+
+        // Anima o texto
+        let currentValue = 0;
+        const targetValue = value.completed;
+        const duration = 1000;
+        const steps = 60;
+        const increment = targetValue / steps;
+        const stepTime = duration / steps;
+
+        const updateText = () => {
+            currentValue = Math.min(currentValue + increment, targetValue);
+            element.text.textContent = `${Math.round(currentValue)}/${value.total} (${value.percentage}%)`;
+            
+            if (currentValue < targetValue) {
+                setTimeout(updateText, stepTime);
+            }
+        };
+
+        updateText();
+    });
 }
 
 // Inicialize o gráfico quando o DOM estiver carregado

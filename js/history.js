@@ -3,10 +3,12 @@ function isSimulatedDemo() {
     const key = localStorage.getItem('trello_key') || '';
     const token = localStorage.getItem('trello_token') || '';
     const boardId = localStorage.getItem('trello_board_id') || '';
-    return (
-        key === '7fd281b264c39b6b3f17b478937b1d54' &&
-        token === 'ATTAf8b7fc8e40203d0aa36b3ff8f9dc13ebca74dc1c78f44551a3578a0e5af2bccd62FB2E29' &&
-        boardId === '64f7a3c2d0cbad8763f9a4e1'
+    
+    // Verifica se as credenciais correspondem a qualquer uma das sprints
+    return Object.entries(DEMO_KEYS).some(([sprintId, creds]) => 
+        key === creds.key && 
+        token === creds.token && 
+        boardId === creds.board
     );
 }
 
@@ -30,7 +32,18 @@ function toggleContentVisibility() {
 async function loadSprintsData() {
     try {
         let sprints = [];
-        if (isSimulatedDemo()) {
+        const key = localStorage.getItem('trello_key') || '';
+        const token = localStorage.getItem('trello_token') || '';
+        const boardId = localStorage.getItem('trello_board_id') || '';
+
+        // Verifica se são credenciais de demo
+        const isDemo = Object.entries(DEMO_KEYS).some(([sprintId, creds]) => 
+            key === creds.key && 
+            token === creds.token && 
+            boardId === creds.board
+        );
+
+        if (isDemo) {
             // Dados simulados para demo
             sprints = [
                 {
@@ -45,6 +58,19 @@ async function loadSprintsData() {
                         days: '20/23'
                     },
                     description: 'Primeira sprint da equipe, focada no aprendizado inicial. Apesar dos desafios de adaptação, a equipe conseguiu entregar todos os cards e pontos planejados, demonstrando excelente capacidade de evolução ao longo do sprint.'
+                },
+                {
+                    id: 'sprint-2',
+                    name: 'Sprint 2 - Evolução e Refinamento',
+                    status: 'Em Progresso',
+                    startDate: '2025-04-16',
+                    endDate: '2025-05-14',
+                    metrics: {
+                        cards: '24/40',
+                        points: '60/100',
+                        days: '12/20'
+                    },
+                    description: 'Segunda sprint focada em evolução e refinamento do projeto. A equipe está demonstrando maior maturidade e velocidade, com entregas mais consistentes e melhor qualidade de código.'
                 }
             ];
         } else {

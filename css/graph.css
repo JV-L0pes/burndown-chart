@@ -16,12 +16,17 @@
   box-sizing: border-box;
 }
 
+html {
+  font-size: 100%;
+}
+
 body {
   font-family: "Segoe UI", Arial, sans-serif;
   background-color: var(--background-color);
   color: var(--text-color);
   line-height: 1.5;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 /* Header Styles */
@@ -324,7 +329,22 @@ canvas {
   padding: 1.5rem;
 }
 
+/* Media Queries para responsive design */
+@media (max-width: 992px) {
+  .chart-wrapper {
+    height: 350px;
+  }
+  
+  .modal-content {
+    width: 70%;
+  }
+}
+
 @media (max-width: 768px) {
+  html {
+    font-size: 95%;
+  }
+  
   .container {
     padding: 1rem;
   }
@@ -335,10 +355,13 @@ canvas {
 
   .metrics-container {
     grid-template-columns: 1fr;
+    gap: 0.8rem;
   }
 
   .metric-item {
-    height: 70px;
+    height: auto;
+    min-height: 70px;
+    padding: 0.7rem 1rem;
   }
 
   header h1 {
@@ -347,5 +370,71 @@ canvas {
 
   .trello-auth-fields {
     grid-template-columns: 1fr;
+  }
+  
+  .modal-content {
+    width: 85%;
+    margin: 20% auto;
+  }
+  
+  .modal-header {
+    padding: 1.2rem;
+  }
+  
+  .modal-body {
+    padding: 1.2rem;
+  }
+  
+  .floating-btn {
+    bottom: 20px;
+    right: 20px;
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  html {
+    font-size: 90%;
+  }
+  
+  .container {
+    padding: 0.8rem;
+  }
+  
+  .chart-section {
+    padding: 1rem;
+  }
+  
+  .chart-wrapper {
+    height: 250px;
+    padding: 0.8rem;
+  }
+  
+  header h1 {
+    font-size: 1.3rem;
+  }
+  
+  .modal-content {
+    width: 95%;
+    margin: 15% auto;
+  }
+  
+  .modal-header h2 {
+    font-size: 1.3rem;
+  }
+  
+  .btn {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+  }
+  
+  .nav-buttons {
+    gap: 0.7rem;
+  }
+  
+  .floating-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
   }
 }

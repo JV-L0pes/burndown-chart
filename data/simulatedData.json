@@ -1,31 +1,43 @@
 {
   "labels": [
-    "18/03", "19/03", "20/03", "21/03", "24/03", "25/03", "26/03", "27/03", "28/03", "31/03",
-    "01/04", "02/04", "03/04", "04/04", "07/04", "08/04", "09/04", "10/04", "11/04", "14/04", "15/04"
+    "2025-03-18", "2025-03-19", "2025-03-20", "2025-03-21", "2025-03-22",
+    "2025-03-23", "2025-03-24", "2025-03-25", "2025-03-26", "2025-03-27",
+    "2025-03-28", "2025-03-29", "2025-03-30", "2025-03-31", "2025-04-01",
+    "2025-04-02", "2025-04-03", "2025-04-04", "2025-04-05", "2025-04-06",
+    "2025-04-07", "2025-04-08", "2025-04-09", "2025-04-10", "2025-04-11",
+    "2025-04-12", "2025-04-13", "2025-04-14", "2025-04-15"
   ],
-  "idealLine": [80, 76, 72, 68, 64, 60, 56, 52, 48, 44, 40, 36, 32, 28, 24, 20, 16, 12, 8, 4, 0],
+  "idealLine": [
+    80, 76.8, 73.6, 70.4, 67.2, 64.0, 60.8, 57.6, 54.4, 51.2,
+    48.0, 44.8, 41.6, 38.4, 35.2, 32.0, 28.8, 25.6, 22.4, 19.2,
+    16.0, 12.8, 9.6, 6.4, 3.2, 0
+  ],
   "data": [
-    { "date": "18/03", "remaining": 80, "completed": 0 },
-    { "date": "19/03", "remaining": 80, "completed": 0 },
-    { "date": "20/03", "remaining": 78, "completed": 2 },
-    { "date": "21/03", "remaining": 76, "completed": 4 },
-    { "date": "24/03", "remaining": 76, "completed": 4 },
-    { "date": "25/03", "remaining": 74, "completed": 6 },
-    { "date": "26/03", "remaining": 73, "completed": 7 },
-    { "date": "27/03", "remaining": 72, "completed": 8 },
-    { "date": "28/03", "remaining": 69, "completed": 11 },
-    { "date": "31/03", "remaining": 69, "completed": 11 },
-    { "date": "01/04", "remaining": 66, "completed": 14 },
-    { "date": "02/04", "remaining": 66, "completed": 14 },
-    { "date": "03/04", "remaining": 63, "completed": 17 },
-    { "date": "04/04", "remaining": 59, "completed": 21 },
-    { "date": "07/04", "remaining": 59, "completed": 21 },
-    { "date": "08/04", "remaining": 52, "completed": 28 },
-    { "date": "09/04", "remaining": 50, "completed": 30 },
-    { "date": "10/04", "remaining": 45, "completed": 35 },
-    { "date": "11/04", "remaining": 38, "completed": 42 },
-    { "date": "14/04", "remaining": 22, "completed": 58 },
-    { "date": "15/04", "remaining": 0, "completed": 80 }
+    { "remaining": 80, "completed": 0 },
+    { "remaining": 75, "completed": 5 },
+    { "remaining": 72, "completed": 8 },
+    { "remaining": 68, "completed": 12 },
+    { "remaining": 65, "completed": 15 },
+    { "remaining": 62, "completed": 18 },
+    { "remaining": 58, "completed": 22 },
+    { "remaining": 55, "completed": 25 },
+    { "remaining": 52, "completed": 28 },
+    { "remaining": 48, "completed": 32 },
+    { "remaining": 45, "completed": 35 },
+    { "remaining": 42, "completed": 38 },
+    { "remaining": 38, "completed": 42 },
+    { "remaining": 35, "completed": 45 },
+    { "remaining": 32, "completed": 48 },
+    { "remaining": 28, "completed": 52 },
+    { "remaining": 25, "completed": 55 },
+    { "remaining": 22, "completed": 58 },
+    { "remaining": 18, "completed": 62 },
+    { "remaining": 15, "completed": 65 },
+    { "remaining": 12, "completed": 68 },
+    { "remaining": 8, "completed": 72 },
+    { "remaining": 5, "completed": 75 },
+    { "remaining": 2, "completed": 78 },
+    { "remaining": 0, "completed": 80 }
   ],
   "metrics": {
     "cardsCompleted": {
@@ -42,6 +54,19 @@
       "completed": 20,
       "total": 23,
       "percentage": 86.96
+    },
+    "velocity": {
+      "weekly": [10, 15, 25, 30],
+      "average": 20
+    },
+    "productivity": {
+      "weekly": [5, 8, 9, 10],
+      "average": 8
+    },
+    "efficiency": {
+      "progress": 100,
+      "expected": 100
     }
-  }
+  },
+  "description": "Primeira sprint da equipe, focada no aprendizado inicial. Apesar dos desafios de adaptação, a equipe conseguiu entregar todos os cards e pontos planejados, demonstrando excelente capacidade de evolução ao longo do sprint. A velocidade média foi de 20 pontos por semana, com uma produtividade consistente de 8 cards por semana."
 }

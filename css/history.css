@@ -15,12 +15,17 @@
   box-sizing: border-box;
 }
 
+html {
+  font-size: 100%;
+}
+
 body {
   font-family: "Segoe UI", Arial, sans-serif;
   background-color: var(--background-color);
   color: var(--text-color);
   line-height: 1.5;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 /* Header Styles */
@@ -110,7 +115,7 @@ header h1 {
 /* Sprint Cards */
 .sprints-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 2rem;
   max-width: 1200px;
   margin: 0 auto;
@@ -123,7 +128,9 @@ header h1 {
   padding: 1.5rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  width: 350px;
+  width: 100%;
+  max-width: 350px;
+  margin: 0 auto;
 }
 
 .sprint-card:hover {
@@ -334,19 +341,52 @@ header h1 {
 }
 
 /* Responsive Design */
+@media (max-width: 992px) {
+  .sprints-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    padding: 0 1rem;
+  }
+  
+  .sprint-card {
+    padding: 1.25rem;
+  }
+}
+
 @media (max-width: 768px) {
+  html {
+    font-size: 95%;
+  }
+  
   .history-container {
     padding: 1rem;
   }
 
   .sprints-grid {
     grid-template-columns: 1fr;
+    gap: 1.25rem;
+    padding: 0;
+  }
+  
+  .sprint-card {
+    max-width: 100%;
   }
 
   .sprint-header {
     flex-direction: column;
     align-items: flex-start;
     gap: 0.5rem;
+  }
+  
+  .sprint-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .sprint-metrics {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.8rem;
   }
 
   .footer-content {
@@ -357,5 +397,58 @@ header h1 {
 
   .footer-links {
     justify-content: center;
+  }
+  
+  .header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .history-title {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  html {
+    font-size: 90%;
+  }
+  
+  .history-container {
+    padding: 0.8rem;
+  }
+  
+  .sprint-card {
+    padding: 1rem;
+  }
+  
+  .sprint-metrics {
+    gap: 0.5rem;
+  }
+  
+  .metric-value {
+    font-size: 1rem;
+  }
+  
+  .sprint-actions .btn {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+  }
+  
+  .header h1 {
+    font-size: 1.3rem;
+  }
+  
+  .history-title {
+    font-size: 1.6rem;
+    margin-bottom: 1.2rem;
+  }
+  
+  .no-auth-container {
+    padding: 2rem 1rem;
+  }
+  
+  .no-auth-icon {
+    font-size: 3rem;
   }
 }

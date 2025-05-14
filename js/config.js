@@ -1,12 +1,23 @@
 const config = {
-    sprint: {
-        name: "Sprint 1",
-        startDate: new Date("2025-03-18"),
-        endDate: new Date("2025-04-15"),
-        totalPoints: 40,
-        remainingPoints: 40,
-        totalCards: 19,
-        completedCards: 8
+    sprints: {
+        'sprint-1': {
+            name: "Sprint 1",
+            startDate: new Date("2025-03-18"),
+            endDate: new Date("2025-04-15"),
+            totalPoints: 80,
+            remainingPoints: 80,
+            totalCards: 32,
+            completedCards: 32
+        },
+        'sprint-2': {
+            name: "Sprint 2",
+            startDate: new Date("2025-04-16"),
+            endDate: new Date("2025-05-14"),
+            totalPoints: 100,
+            remainingPoints: 100,
+            totalCards: 40,
+            completedCards: 24
+        }
     },
     chart: {
         backgroundColor: 'rgba(222, 184, 135, 0.2)', // Bege claro
@@ -38,6 +49,12 @@ const config = {
 };
 
 // Funções de utilidade para configuração
+function getCurrentSprint() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const sprintId = urlParams.get('sprint') || 'sprint-1';
+    return config.sprints[sprintId];
+}
+
 function saveConfig() {
     localStorage.setItem('burndownConfig', JSON.stringify(config));
 }
@@ -46,8 +63,10 @@ function loadConfig() {
     const savedConfig = localStorage.getItem('burndownConfig');
     if (savedConfig) {
         const parsed = JSON.parse(savedConfig);
-        parsed.sprint.startDate = new Date(parsed.sprint.startDate);
-        parsed.sprint.endDate = new Date(parsed.sprint.endDate);
+        parsed.sprints['sprint-1'].startDate = new Date(parsed.sprints['sprint-1'].startDate);
+        parsed.sprints['sprint-1'].endDate = new Date(parsed.sprints['sprint-1'].endDate);
+        parsed.sprints['sprint-2'].startDate = new Date(parsed.sprints['sprint-2'].startDate);
+        parsed.sprints['sprint-2'].endDate = new Date(parsed.sprints['sprint-2'].endDate);
         Object.assign(config, parsed);
     }
 }
