@@ -19,7 +19,7 @@ const theme = {
 // Integração com a API do Trello
 const TRELLO_API_BASE = 'https://api.trello.com/1';
 
-// Chaves fictícias para demo (aparência realista)
+// Chaves para demo
 const DEMO_KEYS = {
     'sprint-1': {
         key: '7fd281b264c39b6b3f17b478937b1d54',
