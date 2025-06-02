@@ -1,4 +1,4 @@
-# 📊 Burndown Chart Generator- ErrorSquad
+# 📊 Burndown Chart Generator - ErrorSquad
 
 <div align="center">
 
