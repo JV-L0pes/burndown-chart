@@ -13,7 +13,7 @@
 
 ## 🚀 Sobre o Projeto
 
-O Burndown Chart é uma ferramenta visual desenvolvida para a ErrorSquad, uma equipe de desenvolvimento ágil. Esta aplicação web oferece uma interface moderna e intuitiva para visualização de métricas importantes do projeto, incluindo:
+O Burndown Chart Generator é uma ferramenta visual desenvolvida para a ErrorSquad, uma equipe de desenvolvimento ágil. Esta aplicação web oferece uma interface moderna e intuitiva para visualização de métricas importantes do projeto, incluindo:
 
 - 📈 Gráfico de Burndown
 - 📊 Métricas de Velocidade
