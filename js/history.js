@@ -1,4 +1,4 @@
-// Chaves para demo
+// Chaves para demo (ATUALIZADAS COM SPRINT 3)
 const DEMO_KEYS = {
     'sprint-1': {
         key: '7fd281b264c39b6b3f17b478937b1d54',
@@ -9,6 +9,11 @@ const DEMO_KEYS = {
         key: '8e392c7a5f1d4b6a9c8e2d1f3a5b7c9d',
         token: 'ATTAf9c8e7d6c5b4a3f2e1d0c9b8a7f6e5d4c3b2a1f0e9d8c7b6a5f4e3d2c1b0a9f8e7d6c5b4a3',
         board: '75e4b2d1c9a8f7e6d5c4b3a2f1e0d9c8'
+    },
+    'sprint-3': {
+        key: '3c7f9e2a1b5d8f4e6c9a2d7b3f8e1c5a',
+        token: 'ATTAc3f7b9e2a1d5f8e4c6a9d2b7f3e8c1a5f9d2b7e3c8a1f5d9e2c7b4a8f1e6d3c9b2a7f5e8c1',
+        board: '89a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5'
     }
 };
 
@@ -58,7 +63,7 @@ async function loadSprintsData() {
         );
 
         if (isDemo) {
-            // Dados simulados para demo
+            // Dados simulados para demo (ATUALIZADOS COM SPRINT 3)
             sprints = [
                 {
                     id: 'sprint-1',
@@ -85,6 +90,19 @@ async function loadSprintsData() {
                         days: '20/20'
                     },
                     description: 'Segunda sprint focada em evolução e refinamento do projeto. A equipe concluiu todos os cards e pontos planejados, demonstrando maior maturidade, velocidade e qualidade de código.'
+                },
+                {
+                    id: 'sprint-3',
+                    name: 'Sprint 3 - Entrega Completa',
+                    status: 'Completada',
+                    startDate: '2025-05-15',
+                    endDate: '2025-06-13',
+                    metrics: {
+                        cards: '48/48',
+                        points: '120/120',
+                        days: '28/30'
+                    },
+                    description: 'Sprint final do projeto - Entrega Completa. A equipe demonstrou máxima maturidade técnica, entregando o projeto completo com excelência. Alcançamos a maior velocidade média da equipe (30 pontos/semana) e produtividade excepcional (12 cards/semana).'
                 }
             ];
         } else {
